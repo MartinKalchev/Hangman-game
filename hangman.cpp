@@ -1,4 +1,3 @@
-///Мартин Калчев F85994
 #include <iostream>
 #include <string>
 #include <vector>
@@ -8,31 +7,39 @@
 
 using namespace std;
 
+/// Using a custom data structure to store the words from the .txt file
 class ArrayVector
 {
 public:
     ArrayVector()
     {
-        n = 0;
+        n = 0; /// size of the structure initially
     }
+
+    /// function to insert the words in the vector words.
     void insert(const string &s)
     {
         words.push_back(s);
         n++;
     }
+
+    /// function to erase words from the vector words.
     void erase()
     {
         words.pop_back();
     }
+
     int size()
     {
         return n;
     }
+
     bool empty()
     {
         return size() == 0;
     }
 
+    /// function to randomly choose a word from all the words in the game
     string Rand()
     {
         srand(time(0));
@@ -46,9 +53,12 @@ private:
 };
 
 
+/// function that checks if the letter given by the user is in the word to guess.
+/// if the guess is correct update the blank spaces in the word with the correct letter
+/// if the guess is wrong update the wrongInputs variable
 void isCorrect(char guess, const string& word, string& soFar, int& wrongInputs)
 {
-    if (word.find(guess) != string::npos)
+    if (word.find(guess) != string::npos)  /// checks if the letter is contained in the word to guess.
     {
         cout << "Correct! " << "'" << guess << "'" << " is in the word.\n";
 
@@ -63,6 +73,8 @@ void isCorrect(char guess, const string& word, string& soFar, int& wrongInputs)
     }
 }
 
+
+/// the function that draws the hangman in the game after a wrong guess by the player.
 void draw(int& wrongInputs)
 {
  if(wrongInputs==1)
@@ -158,12 +170,12 @@ void draw(int& wrongInputs)
 
 int main()
 {
-    const int maxWrongGuesses = 8;
+    const int maxWrongGuesses = 8;  /// max number of wrong guesses
 
     string line;
-    ArrayVector words;
+    ArrayVector words;  /// initialization of the data structure that will contain the words
     ifstream file;
-    file.open("words.txt");
+    file.open("words.txt");   /// the file which contains the words for the game
 
     while(!(file.eof()))
     {
@@ -181,7 +193,7 @@ int main()
     cout << "WELCOME TO THE HANGMAN GAME!!! GOOD LUCK, YOU WILL NEED IT!\n";
     cout << "/_________________________________________________________\\";
 
-    while ((wrongGuesses < maxWrongGuesses) && (soFar != rnd))
+    while ((wrongGuesses < maxWrongGuesses) && (soFar != rnd))  /// keep working until the word is not guessed or the maximum wrong inputs is reached
     {
         cout << "\n\nYou have " << (maxWrongGuesses - wrongGuesses) << " incorrect guesses left.\n";
         cout << "\nThe following letter have been used:\n" << GuessedLetters << endl;
@@ -192,13 +204,13 @@ int main()
         cin >> guess;
 
 
-    while (GuessedLetters.find(guess) != string::npos)
+    while (GuessedLetters.find(guess) != string::npos) /// checks if the letter is already typed by the player and if it is the user is asked to type another letter
     {
         cout << "\nYou've already guessed " << guess << endl;
         cout << "Enter your guess: ";
         cin >> guess;
     }
-        GuessedLetters += guess;
+        GuessedLetters += guess;  /// the letters which are correctly guessed are updated
 
 
         isCorrect(guess, rnd, soFar, wrongGuesses);
